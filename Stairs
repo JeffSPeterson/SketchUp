@@ -1,0 +1,55 @@
+# Modified tutorial from SketchUp
+# Standard API
+require 'sketchup.rb'
+
+# Add a menu item to launch our plugin.
+UI.menu("Plugins").add_item("Draw stairs") { 
+
+# Call method.
+  draw_stairs 
+}
+
+def draw_stairs
+
+  # Variables
+  prompts = ["How Many Stairs?"]
+  values = [2]
+  @results = UI.inputbox(prompts, values, "Input Number Of Stairs?") 
+  stairs = @results[0]
+
+  color = 255
+  color2 = 0
+  rise = 8
+  run = 12
+  width = 100
+  thickness = 4
+
+  # Get handles to our model and the Entities collection it contains.
+  model = Sketchup.active_model
+  entities = model.entities
+
+  # Create Stairs
+  for step in 1..stairs
+    
+    # Calculate our stair corners.
+    x1 = 0
+    x2 = width
+    y1 = run * step
+    y2 = run * (step + 1)
+    z = rise * step 
+    
+    # Create points
+    pt1 = [x1, y1, z]
+    pt2 = [x2, y1, z]
+    pt3 = [x2, y2, z]
+    pt4 = [x1, y2, z]
+
+    # Draw Stairs
+    new_face = entities.add_face pt1, pt2, pt3, pt4
+	new_face.material = Sketchup::Color.new(color, color2, 0)
+    color = color - 20
+    color2 = color2 + 20
+	new_face.pushpull thickness
+  end
+
+end
