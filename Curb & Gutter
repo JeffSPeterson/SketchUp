@@ -1,0 +1,41 @@
+# This script draws a standard curb and gutter
+
+# Standard API
+require 'sketchup.rb'
+
+# Add a menu item.
+UI.menu("Plugins").add_item("Draw Curb") { 
+
+# Call method.
+  draw_curb 
+}
+
+	def draw_curb
+		# Get handles to our model and the Entities collection it contains.
+		model = Sketchup.active_model
+		entities = model.entities
+		
+		# Adds and initial thickness to the curb
+		thickness = 3
+ 
+		# Add standard curb dimensions.
+		x1 = 0
+		x2 = 6.inch
+		x3 = 18.inch
+		y = 0
+		z1 = 0
+		z2 = 6.inch
+		z3 = 12.inch
+    
+		# Create points
+		pt1 = [x1, y, z1]
+		pt2 = [x1, y, z3]
+		pt3 = [x2, y, z3]
+		pt4 = [x2, y, z2]
+		pt5 = [x3, y, z2]
+		pt6 = [x3, y, z1]
+		
+		# Draw Curb
+		new_face = entities.add_face pt1, pt2, pt3, pt4, pt5, pt6
+		new_face.pushpull thickness
+	end
